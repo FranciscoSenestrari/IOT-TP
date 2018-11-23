@@ -2,6 +2,7 @@
 #include <ESP8266WebServer.h>
 #include <EEPROM.h>
 #include <Adafruit_NeoPixel.h>
+#include "config.h"
 
 
 
@@ -15,7 +16,11 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ80
 
 int delayval = 100; // delay for half a second
 
+config_t conf;
 
+
+conf.essid = "Test-iot";
+conf.pass = "";
 
 
 const char *ssid = "Test-iot";
@@ -38,7 +43,7 @@ String pagina = "<!DOCTYPE html>"
 "<input class='input1' name='pass' type='password'><br><br>"
 "<input class='boton' type='submit' value='GUARDAR'/><br><br>"
 "</form>";
-
+"<input class='boton' type='submit' value='Mostrar Eprom'/><br><br>"
 String paginafin = "</body> </html>";
 
 
@@ -48,15 +53,16 @@ WiFiClient espClient;
 ESP8266WebServer server(80);
 void setup() {
 
-  WiFi.softAP(ssid, pass);
+  WiFi.softAP(conf.essid, conf.pass);
   Serial.println("Iniciado WebServer ...");
   server.on("/", paginaconf);// prepara laaginas a mostrar
   server.on("/guardar", guardar);   
+  server.on("/mostrar", leer(0);
   server.begin();
 
   pixels.begin(); 
   while (true) {
-      server.handleClient();
+      server.handleClient();//asd
   }
 
 }
@@ -93,7 +99,6 @@ void guardar() {
   }
   paginaconf();
 }
-
 void grabar(int addr, String a) {
   int tamano = a.length(); 
   char inchar[50]; 
@@ -118,7 +123,6 @@ String leer(int addr) {
    }
    return strlectura;
 }
-
 
 void loop() {
   // put your main code here, to run repeatedly:
