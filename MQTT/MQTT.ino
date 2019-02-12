@@ -2,10 +2,6 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <Adafruit_NeoPixel.h>
-#include "config.h"
-
-
-
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
@@ -15,31 +11,16 @@
 #define NUM_LEDS 8
 
 #define BRIGHTNESS 255
-/////////////////////////////////////////////
-
-config_t config;
-
-
-
+//////////////////////broker///////////////////////
+const char *ssid = "T-rex"; 
+const char *password = "senestrari"; 
+const char *mqtt_server = "100.100.141.90:12225"; 
+const char *device_id = "esp8266";
+const char *topic = "/ingenieria/sala_c/esp8266/led_control";
+const int mqtt_port = 12225;
 const char *mqtt_user = "nyqoyysv";
 const char *mqtt_pass = "9kUGgGSsRckF";
-config.essid = "T-rex";
-config.pass ="senestrari"; 
-config.broker_add = "100.100.141.90:12225";
-config.broker_puerto =12225;
-config.broker_topic ="/ingenieria/sala_c/esp8266/led_control";
-config.clientID ="esp8266";
 
-/*
- *   char essid[50];
-  char pass[50];
- *  // Broker
-  char broker_add[50];
-  int broker_puerto;
-  char broker_topic[100];
-  char clientID[10];
-
- */
 WiFiClient espClient;
 PubSubClient client(espClient);
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRBW + NEO_KHZ800);
@@ -63,7 +44,7 @@ void callback(char *led_control, byte *payload, unsigned int length)
 
   String msgString = String(message_buff);
   Serial.println(msgString);
-  if (strcmp(led_control, broker_topic) == 0)
+  if (strcmp(led_control, topic) == 0)
   { 
     if (msgString == "1")
     {
@@ -81,10 +62,10 @@ void reconnect()
   while (!client.connected())
   {
     Serial.print("Esperando conexion mqtt...");
-    if (client.connect(config.clientID,mqtt_user,mqtt_pass))
+    if (client.connect(device_id,mqtt_user,mqtt_pass))
     { 
     Serial.println("Conectado");
-    client.subscribe(broker_topic); 
+    client.subscribe(topic); 
     
     }
     else
@@ -104,12 +85,12 @@ void setup()
   Serial.begin(115200);
 
 
- WiFi.begin(config.essid, config.pass);
-  while (WiFi.status() != WL_CONNECTED) {
+ WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_IDLE_STATUS ) {
     Serial.print(".");
     delay(500);}
     
-  client.setServer(broker_add,broker_puerto );
+  client.setServer(mqtt_server,mqtt_port );
   client.setCallback(callback);
   
   strip.setBrightness(BRIGHTNESS);
