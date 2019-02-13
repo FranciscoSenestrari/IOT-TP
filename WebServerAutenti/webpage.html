@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Eeprom IOT</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset='UTF-8'>
+</head>
+<body>
+  <div class="jumbotron" >
+
+      <h1 style=" border-bottom-style: outset;
+      border-bottom-color: coral;
+      border-bottom-width: 7px;"> Eeprom esp8266 </h1>
+  </div>
+
+  <div class="card" style="  position:fixed;left:40%; text-align: center">
+        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">Configuracion Eeprom</div>
+            <div class="card-body">
+                <form action='guardar' method='get'style='margin-top:10%'>
+                    SSID:<br><br>
+                    <input class='form-control' name='ssid' type='text'>
+              
+                    <br>
+                    PASSWORD:<br><br>
+                    <input class='form-control' name='pass' type='password'><br><br>
+                    <input class='btn btn-success' type='submit' value='GUARDAR'/><br>
+                    </form>
+            </div>
+        </div>
+<footer  style='
+    background-color: #160b0b;
+    border-top: 1px solid rgba(255, 9, 9, 0.3);
+    position: fixed;
+    bottom: 0;   
+    color: aliceblue;
+    text-align: center;
+  '>
+  Creado por Francisco Jose Senestrari
+</footer>
+</body> 
+</html>
