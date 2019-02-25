@@ -62,29 +62,10 @@ strip.begin();
 strip.show();
 Serial.begin(9600);
 WiFi.begin(ssid, password);
-
-if (WiFi.status() == WL_CONNECTED) {
-  
 client.setServer(mqtt_server,mqtt_port );
 client.setCallback(callback);
-}
-else
-{
-  rainbowFade2White(2,2,1);
-  WiFi.softAP(ssid_a ,pass_a);
-  Serial.println("Iniciado WebServer ...");
-  server.on("/", pagInicio);// prepara laaginas a mostrar
-  server.on("/login", login);
-  server.on("/guardar", guardar);
-  server.begin();
-          
-
-  while (true) {
-      server.handleClient();
-  }
 
 
-  }
 
 
 
@@ -100,6 +81,22 @@ else
 }
 
 void loop() {
+
+  //////
+  if (WiFi.status() != WL_CONNECTED) {
+  rainbowFade2White(2,2,1);
+  WiFi.softAP(ssid_a ,pass_a);
+  Serial.println("Iniciado WebServer ...");
+  server.on("/", pagInicio);// prepara laaginas a mostrar
+  server.on("/login", login);
+  server.on("/guardar", guardar);
+  server.begin();
+          
+
+  while (true) {
+      server.handleClient();
+  }
+  }
   EEPROM.begin(512);
 }
 
